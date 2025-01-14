@@ -6,10 +6,16 @@ package ca.bcit.comp2522.bank;
  */
 class Date
 {
-    private final static int MAX_YEARS = 2024;
-    private final static int MIN_YEARS = 1800;
-    private final static int MAX_MONTHS = 12;
-    private final static int MIN_MONTHS = 1;
+    private final static int MIN_YEAR = 1800;
+    private final static int MAX_YEAR = 2024;
+    private final static int MIN_MONTH = 1;
+    private final static int MAX_MONTH = 12;
+    private final static int MIN_DAY = 1;
+
+    private final static int MAX_DAY_LONG_MONTH = 31;
+    private final static int MAX_DAY_SHORT_MONTH = 30;
+    private final static int MAX_LEAP_FEB_DAY = 29;
+    private final static int MAX_NO_LEAP_FEB_DAY = 28;
 
     private final static int JANUARY = 1;
     private final static int FEBRUARY = 2;
@@ -24,35 +30,35 @@ class Date
     private final static int NOVEMBER = 11;
     private final static int DECEMBER = 12;
 
-    private final static int MAX_31_DAY_MONTH_DAYS = 31;
-    private final static int MAX_30_DAY_MONTH_DAYS = 30;
 
-    private final static int MAX_LEAP_FEB_DAYS = 29;
-    private final static int MAX_NO_LEAP_FEB_DAYS = 28;
     private final static int LEAP_YEAR_CYCLE = 4;
     private final static int LEAP_YEAR_CYCLE_EXCEPTION = 100;
-    private final static int LEAP_YEAR_VALID = 0;
+    private final static int LEAP_YEAR_VALID_CHECK = 0;
 
-    private final static int MIN_DAYS = 1;
 
-    private final static int YEAR_1800_OFFSET = 2;
-    private final static int YEAR_1900 = 1900;
-    private final static int YEAR_2000_OFFSET = 6;
-    private final static int YEAR_2000 = 2000;
+    private final static int NINETEENTH_CENTURY = 1800;
+    private final static int TWENTIETH_CENTURY = 1900;
+    private final static int TWENTY_FIRST_CENTURY = 2000;
+    private final static int SATURDAY = 0;
+    private final static int SUNDAY = 1;
+    private final static int MONDAY = 2;
+    private final static int TUESDAY = 3;
+    private final static int WEDNESDAY = 4;
+    private final static int THURSDAY = 5;
+    private final static int FRIDAY = 6;
 
-    //rename step one constant, make them local
-    private final static int WEEKDAY_FINDER_CONSTANT_12 = 12;
-    private final static int WEEKDAY_FINDER_CONSTANT_4 = 4;
 
     private final int year;
     private final int month;
     private final int day;
 
 
-    Date(final int year, final int month, final int day)
+    Date(final int year,
+         final int month,
+         final int day)
     {
-        validateNumber(year, MIN_YEARS, MAX_YEARS);
-        validateNumber(month, MIN_MONTHS, MAX_MONTHS);
+        validateInt(year, MIN_YEAR, MAX_YEAR);
+        validateInt(month, MIN_MONTH, MAX_MONTH);
         validateDay(day, month, year);
 
         this.year = year;
@@ -60,91 +66,235 @@ class Date
         this.day = day;
     }
 
-    private static void validateNumber(final int number, final int min, final int max)
+    private static void validateInt(final int number,
+                                    final int min,
+                                    final int max)
     {
         if(number < min || number > max)
         {
-            StringBuilder rangeErrorMessage;
+            StringBuilder intRangeErrorMessage;
 
-            rangeErrorMessage = new StringBuilder();
+            intRangeErrorMessage = new StringBuilder();
 
-            rangeErrorMessage.append(number);
-            rangeErrorMessage.append(" out of range of ");
-            rangeErrorMessage.append(min);
-            rangeErrorMessage.append('-');
-            rangeErrorMessage.append(max);
+            intRangeErrorMessage.append(number);
+            intRangeErrorMessage.append(" out of range of ");
+            intRangeErrorMessage.append(min);
+            intRangeErrorMessage.append('-');
+            intRangeErrorMessage.append(max);
 
-            throw new IllegalStateException(rangeErrorMessage.toString());
+            throw new IllegalStateException(intRangeErrorMessage.toString());
         }
     }
 
-    private static void validateDay(final int day, final int month, final int year)
+    private static void validateDay(final int day,
+                                    final int month,
+                                    final int year)
     {
-        final int maxDays;
 
-        switch (month)
+        switch(month)
         {
+            case JANUARY:
+            case MARCH:
+            case MAY:
+            case JULY:
+            case AUGUST:
+            case OCTOBER:
+            case DECEMBER:
+                validateInt(day, MIN_DAY, MAX_DAY_LONG_MONTH);
+                break;
+
             case APRIL:
             case JUNE:
             case SEPTEMBER:
             case NOVEMBER:
-                maxDays = MAX_30_DAY_MONTH_DAYS;
+                validateInt(day, MIN_DAY, MAX_DAY_SHORT_MONTH);
                 break;
 
             case FEBRUARY:
-                maxDays = (isLeapYear(month, year)) ? MAX_LEAP_FEB_DAYS : MAX_NO_LEAP_FEB_DAYS;
-                break;
+                if(isLeapYear(month, year))
+                {
+                    validateInt(day, MIN_DAY, MAX_LEAP_FEB_DAY);
+                }
+                else
+                {
+                    validateInt(day, MIN_DAY, MAX_NO_LEAP_FEB_DAY);
+                }
 
             default:
-                maxDays = MAX_31_DAY_MONTH_DAYS;
-                break;
+                StringBuilder monthRangeErrorMessage;
+                monthRangeErrorMessage = new StringBuilder();
+
+                monthRangeErrorMessage.append(month);
+                monthRangeErrorMessage.append(" out of range of ");
+                monthRangeErrorMessage.append(MIN_MONTH);
+                monthRangeErrorMessage.append('-');
+                monthRangeErrorMessage.append(MAX_MONTH);
+
+                throw new IllegalStateException(monthRangeErrorMessage.toString());
         }
 
-        validateNumber(day, MIN_DAYS, maxDays);
 
     }
 
-    private static boolean isLeapYear(final int month, final int year)
+    private static boolean isLeapYear(final int month,
+                                      final int year)
     {
-        return (year % LEAP_YEAR_CYCLE == LEAP_YEAR_VALID && year % LEAP_YEAR_CYCLE_EXCEPTION != LEAP_YEAR_VALID) ||
-                (year % (LEAP_YEAR_CYCLE * LEAP_YEAR_CYCLE_EXCEPTION) == LEAP_YEAR_VALID);
+        return (year % LEAP_YEAR_CYCLE == LEAP_YEAR_VALID_CHECK && year % LEAP_YEAR_CYCLE_EXCEPTION != LEAP_YEAR_VALID_CHECK) || (year % (LEAP_YEAR_CYCLE * LEAP_YEAR_CYCLE_EXCEPTION) == LEAP_YEAR_VALID_CHECK);
     }
 
-
+    /**
+     * Returns the day associated with the date object.
+     *
+     * @return int representing the day (1-31)
+     */
     public int getDay()
     {
         return this.day;
     }
 
+    /**
+     * Returns the month associated with the date object.
+     *
+     * @return int representing the month (1-12)
+     */
     public int getMonth()
     {
         return this.month;
     }
 
+    /**
+     * Returns the year associated with the date object.
+     *
+     * @return int representing the year (1800-2024)
+     */
     public int getYear()
     {
         return this.year;
     }
 
-    public int getDatOfTheWeek()
+    /**
+     * Returns the Date associcated with the date object in YYYY-MM-DD format
+     *
+     * @return String the YYYY-MM-DD formated Date
+     */
+    public String getYyyyMmDd()
     {
-        int dayOfTheWeek;
+        StringBuilder yyyyMmDd = new StringBuilder();
+        yyyyMmDd.append(this.year);
+        yyyyMmDd.append("-");
+        yyyyMmDd.append(this.month);
+        yyyyMmDd.append("-");
+        yyyyMmDd.append(this.day);
+        return yyyyMmDd.toString();
+    }
 
-        if(year < YEAR_1900) {
+    /**
+     * Returns the day of the week as a String
+     * <p>
+     * To get the day of the week, do the following seven steps for dates in the 1900s:
+     * e.g. October 31 1977:
+     * step 1: calculate the number of twelves in 77: 6
+     * step 2: calculate the remainder from step 1: 77 - 12*6 = 77 - 72 = 5
+     * step 3: calculate the number of fours in step 2: 5/4 = 1.25, so 1
+     * step 4: add the day of the month to each step above: 31 + 6 + 5 + 1 = 43
+     * step 5: add the month code (for jfmamjjasond: 144025036146): for october it is 1: 43 + 1 = 44
+     * step 6: add the previous five numbers: (44) and mod by 7: 44%7 = 2 (44/7 = 6 remainder 2)
+     * step 7: sat sun mon tue wed thu fri is 0 1 2 3 4 5 6; our 2 means Oct 31 1977 was monday
+     * <p>
+     * Extra notes:
+     * a) for January/February dates in leap years, add 6 at the start
+     * b) for all dates in the 2000s, add 6 at the start
+     * c) for all dates in the 1800s, add 2 at the start
+     *
+     * @return String of the day of the week
+     */
+    public String getDatOfTheWeek()
+    {
+        final int initalFormulaValue;
 
-        }
-        else if(year > YEAR_1900 && year < YEAR_2000)
+        final int step1result;
+        final int step2result;
+        final int step3result;
+        final int step4result;
+        final int step5result;
+        final int step6result;
+        final String step7result;
+
+        final int step1Constant;
+        final int step3Constant;
+        final String step5Constant;
+        final int step5Offset;
+        final int step6Constant;
+        final int nineteenthCenturyOffset;
+        final int twentiethCenturyOffset;
+        final int twentyFirstCenturyOffset;
+
+        step1Constant = 12;
+        step3Constant = 4;
+        step5Constant = "144025036146";
+        step5Offset = 1;
+        step6Constant = 7;
+        nineteenthCenturyOffset = 2;
+        twentiethCenturyOffset = 0;
+        twentyFirstCenturyOffset = 6;
+
+        if(year >= NINETEENTH_CENTURY && year < TWENTIETH_CENTURY)
         {
-
+            initalFormulaValue = nineteenthCenturyOffset + this.year - NINETEENTH_CENTURY;
+        }
+        else if(year >= TWENTIETH_CENTURY && year < TWENTY_FIRST_CENTURY)
+        {
+            initalFormulaValue = twentiethCenturyOffset + this.year - TWENTIETH_CENTURY;
+        }
+        else if(year >= TWENTY_FIRST_CENTURY && year < MAX_YEAR)
+        {
+            initalFormulaValue = twentyFirstCenturyOffset + this.year - TWENTY_FIRST_CENTURY;
         }
         else
         {
-
+            throw new IllegalStateException("Invalid year: " + year);
         }
 
 
+        step1result = initalFormulaValue / step1Constant;
+        step2result = initalFormulaValue - step1result;
+        step3result = step2result % step3Constant;
+        step4result = this.day + step1result + step2result + step3result;
+        step5result = step4result + Character.getNumericValue(step5Constant.charAt(this.month - step5Offset));
+        step6result = step5result % step6Constant;
 
-        return 0;
+        switch(step6result)
+        {
+            case SATURDAY:
+                step7result = "Saturday";
+                break;
+            case SUNDAY:
+                step7result = "Sunday";
+                break;
+            case MONDAY:
+                step7result = "Monday";
+                break;
+            case TUESDAY:
+                step7result = "Tuesday";
+                break;
+            case WEDNESDAY:
+                step7result = "Wednesday";
+                break;
+            case THURSDAY:
+                step7result = "Thursday";
+                break;
+            case FRIDAY:
+                step7result = "Friday";
+                break;
+            default:
+                StringBuilder weekdayFormatErrorMessage = new StringBuilder();
+                weekdayFormatErrorMessage.append("Unexpected value of ");
+                weekdayFormatErrorMessage.append(step6result);
+                weekdayFormatErrorMessage.append(". Expected 0-6");
+                throw new IllegalStateException(weekdayFormatErrorMessage.toString());
+        }
+
+        return step7result;
     }
 
 }
