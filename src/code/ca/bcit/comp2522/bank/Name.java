@@ -114,9 +114,10 @@ public class Name
     public String getReverseName()
     {
         final String fullName;
+        StringBuilder reversedName;
 
-        fullName = getFullName();
-        StringBuilder reversedName = new StringBuilder();
+        fullName = firstName + " " +  lastName;
+        reversedName = new StringBuilder();
 
         for(int i = fullName.length() - 1; i >= 0; i--)
         {
