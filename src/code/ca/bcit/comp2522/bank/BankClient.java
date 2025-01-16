@@ -1,7 +1,10 @@
 package ca.bcit.comp2522.bank;
 
 /**
- *
+ * Represents a bank client, being a person with a name, birthdate, optional death date
+ * signup date and a client ID.
+ * Includes a methode to retrieve details of the client, including their name, client ID,
+ * signup date, birthdate and whether they are alive or deceased.
  *
  * @author Mohammad Sadeghi
  * @version 1.0
@@ -40,7 +43,10 @@ public class BankClient
     }
 
     /**
-     *
+     * Generates a string containing the client's details, including their full name,
+     * client ID, signup date, and whether they are alive or dead.
+     * If the client is alive, the details will indicate that.
+     * If the client is deceased, the details will indicate that and include the death date.
      *
      * @return A string included the details of the client.
      */
@@ -60,7 +66,7 @@ public class BankClient
             details.append(signupDate.getDatOfTheWeek());
             details.append(", ");
             details.append(signupDate.getYyyyMmDd());
-            details.append("and was born on ");
+            details.append(" and was born on ");
             details.append(birthDate.getDatOfTheWeek());
             details.append(", ");
             details.append(birthDate.getYyyyMmDd());
