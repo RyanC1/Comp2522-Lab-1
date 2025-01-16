@@ -1,28 +1,33 @@
 package ca.bcit.comp2522.bank;
 
 /**
- * Represents a person's Name with first and last.
+ * Represents a person's full name with first and last names.
  * Includes methods to retrieve full name, initials and reversed name.
+ *
  * @author Mohammad Sadeghi
  * @version 1.0
  */
 public class Name
 {
-    private static final int FIRST_LAST_NAME_LEN = 45;
+    private static final int MAX_FIRST_LAST_NAME_LEN = 45;
+    private static final int FIRST_CHAR = 0;
+    private static final int SECOND_CHAR = 1;
 
     private final String firstName;
     private final String lastName;
 
     /**
-     * Constructs a Name object by validating and initializing the given first and last name.
+     * Constructs a Name object with provided first and last name.
+     * Validates the first name and the last name to make sure they meet the requirements.
+     *
      * @param firstName the first name to be set
      * @param lastName the last name to be set
-     * @throws IllegalArgumentException if first or last name are null, blank, exceeds character limit, or contains 'admin'
      */
-    public Name(final String firstName, final String lastName)
+    public Name(final String firstName,
+                final String lastName)
     {
-        validateFirstName(firstName);
-        validateLastName(lastName);
+        validateName(firstName);
+        validateName(lastName);
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +35,7 @@ public class Name
 
     /**
      * Accessor method for first name.
+     *
      * @return first name.
      */
     public String getFirst()
@@ -39,6 +45,7 @@ public class Name
 
     /**
      * Accessor method for last name.
+     *
      * @return last name.
      */
     public String getLast()
@@ -46,84 +53,77 @@ public class Name
         return lastName;
     }
 
-    /*
-     * Validates the first name to make sure it's not null,
-     * is not blank, is not 'admin' and that it is in the range
-     * of maximum allowed number of characters.
+    /**
+     * Validates the given name based on specific criteria:
+     * 1. Cannot be null.
+     * 2. Cannot be blank.
+     * 3. Cannot contain the word "admin".
+     * 4. Cannot be longer than MAX_FIRST_LAST_NAME_LEN characters.
+     *
+     * @param name the name being validated.
      */
-    private static void validateFirstName(final String firstName)
+    private static void validateName(final String name)
     {
 
-        //Checks if first name null, blank or is longer than max number of characters allowed
-        if(firstName == null || firstName.isBlank() || firstName.length() > FIRST_LAST_NAME_LEN)
+        if(name == null ||
+           name.isBlank() ||
+           name.length() > MAX_FIRST_LAST_NAME_LEN ||
+           name.contains("admin"))
         {
-            throw new IllegalArgumentException("bad first name: " + firstName);
-        }
-
-        //Checks if first name contains 'admin', if so throws an exception
-        if(firstName.toLowerCase().contains("admin"))
-        {
-            throw new IllegalArgumentException("bad first name: " + firstName);
-        }
-    }
-
-    /*
-     * Validates the last name to make sure it's not null,
-     * is not blank, is not 'admin' and that it is in the range
-     * of maximum allowed number of characters.
-     */
-    private static void validateLastName(final String lastName)
-    {
-
-        //Checks if last name null, blank or is longer than max number of characters allowed
-        if(lastName == null || lastName.isBlank() || lastName.length() > FIRST_LAST_NAME_LEN)
-        {
-            throw new IllegalArgumentException("bad last name: " + lastName);
-        }
-
-        //Checks if last name contains 'admin', if so throws an exception
-        if(lastName.toLowerCase().contains("admin"))
-        {
-            throw new IllegalArgumentException("bad last name: " + lastName);
+            throw new IllegalArgumentException("Bad name: " + name);
         }
     }
 
     /**
-     * Returns the initials of the full name.
-     * @return Full name initials in the form F.L.
+     * Gets the initials of the full name in the form of "F.L.".
+     *
+     * @return Full name initials in the form "F.L.".
      */
     public String getInitials()
     {
-        return Character.toUpperCase(firstName.charAt(0)) + "." + Character.toUpperCase(lastName.charAt(0)) + ".";
+        final String initials;
+
+        initials = Character.toUpperCase(firstName.charAt(FIRST_CHAR)) + "." +
+                   Character.toUpperCase(lastName.charAt(FIRST_CHAR)) + ".";
+        return initials;
     }
 
     /**
-     * Returns the full name.
-     * @return Full name.
+     * Returns the full name with the first letters of the first and last name's being capitalized
+     * and the rest of the letters being lowercased.
+     *
+     * @return Full name in the form of "First Last".
      */
     public String getFullName()
     {
-        return Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1).toLowerCase() + " " +
-                Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1).toLowerCase();
+        final String fullName;
+
+        fullName = Character.toUpperCase(firstName.charAt(FIRST_CHAR)) + firstName.substring(SECOND_CHAR).toLowerCase() + " " +
+                   Character.toUpperCase(lastName.charAt(FIRST_CHAR)) + lastName.substring(SECOND_CHAR).toLowerCase();
+
+        return fullName;
     }
 
     /**
-     * Returns The full name in reverse.
-     * @return Full name reversed.
+     * Returns The full name in reverse and returns it as a string.
+     * Every character will be reversed including spaces.
+     *
+     * @return Full name reversed in format of "last name first name" with every character reversed.
      */
     public String getReverseName()
     {
-        final String fullName;
-        StringBuilder reversedName;
+        final StringBuilder reversedName;
+        final String str;
 
-        fullName = firstName + " " +  lastName;
         reversedName = new StringBuilder();
 
-        for(int i = fullName.length() - 1; i >= 0; i--)
-        {
-            reversedName.append((fullName).charAt(i));
-        }
+        reversedName.append(firstName);
+        reversedName.append(" ");
+        reversedName.append(lastName);
+        reversedName.reverse();
 
-        return reversedName.toString();
+        str = reversedName.toString();
+
+        return str;
     }
 }
