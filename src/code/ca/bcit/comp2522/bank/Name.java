@@ -5,13 +5,14 @@ package ca.bcit.comp2522.bank;
  * Includes methods to retrieve full name, initials and reversed name.
  *
  * @author Mohammad Sadeghi
+ * @author Ryan Chu
  * @version 1.0
  */
 public class Name
 {
-    private static final int MAX_FIRST_LAST_NAME_LEN = 45;
-    private static final int FIRST_CHAR = 0;
-    private static final int SECOND_CHAR = 1;
+    private static final int MAX_FIRST_LAST_NAME_LEN = 44;
+    private static final int FIRST_CHAR_OF_NAME  = 0;
+    private static final int SECOND_CHAR_OF_NAME = 1;
 
     private final String firstName;
     private final String lastName;
@@ -21,7 +22,7 @@ public class Name
      * Validates the first name and the last name to make sure they meet the requirements.
      *
      * @param firstName the first name to be set
-     * @param lastName the last name to be set
+     * @param lastName  the last name to be set
      */
     public Name(final String firstName,
                 final String lastName)
@@ -30,7 +31,7 @@ public class Name
         validateName(lastName);
 
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.lastName  = lastName;
     }
 
     /**
@@ -67,8 +68,9 @@ public class Name
 
         if(name == null ||
            name.isBlank() ||
-           name.length() > MAX_FIRST_LAST_NAME_LEN ||
-           name.contains("admin"))
+           name.contains("admin") ||
+           name.length() > MAX_FIRST_LAST_NAME_LEN)
+
         {
             throw new IllegalArgumentException("Bad name: " + name);
         }
@@ -83,8 +85,8 @@ public class Name
     {
         final String initials;
 
-        initials = Character.toUpperCase(firstName.charAt(FIRST_CHAR)) + "." +
-                   Character.toUpperCase(lastName.charAt(FIRST_CHAR)) + ".";
+        initials = Character.toUpperCase(firstName.charAt(FIRST_CHAR_OF_NAME)) + "." +
+                   Character.toUpperCase(lastName.charAt(FIRST_CHAR_OF_NAME)) + ".";
         return initials;
     }
 
@@ -98,8 +100,11 @@ public class Name
     {
         final String fullName;
 
-        fullName = Character.toUpperCase(firstName.charAt(FIRST_CHAR)) + firstName.substring(SECOND_CHAR).toLowerCase() + " " +
-                   Character.toUpperCase(lastName.charAt(FIRST_CHAR)) + lastName.substring(SECOND_CHAR).toLowerCase();
+        fullName =
+                Character.toUpperCase(firstName.charAt(FIRST_CHAR_OF_NAME)) +
+                firstName.substring(SECOND_CHAR_OF_NAME).toLowerCase() + " " +
+                Character.toUpperCase(lastName.charAt(FIRST_CHAR_OF_NAME)) +
+                lastName.substring(SECOND_CHAR_OF_NAME).toLowerCase();
 
         return fullName;
     }
@@ -113,7 +118,7 @@ public class Name
     public String getReverseName()
     {
         final StringBuilder reversedName;
-        final String str;
+        final String        str;
 
         reversedName = new StringBuilder();
 
