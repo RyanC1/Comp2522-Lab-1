@@ -41,7 +41,10 @@ class Main
         System.out.println("Full name: " + einstein.getName().getFullName());
         System.out.println("Reversed name: " + einstein.getName().getReverseName());
         System.out.println("Details: " + einstein.getDetails());
+        System.out.println("Account details: " + einsteinAccount.getDetails());
+        System.out.println("withdrawn $100");
         einsteinAccount.withdraw(100);
+        System.out.println("Account details: " + einsteinAccount.getDetails());
         System.out.println("\n");
 
         BankClient mandela = new BankClient(new Name("Nelson",
@@ -66,7 +69,10 @@ class Main
         System.out.println("Full name: " + mandela.getName().getFullName());
         System.out.println("Reversed name: " + mandela.getName().getReverseName());
         System.out.println("Details: " + mandela.getDetails());
+        System.out.println("Account details: " + mandelaAccount.getDetails());
+        System.out.println("withdrawn $200");
         mandelaAccount.withdraw(200);
+        System.out.println("Account details: " + mandelaAccount.getDetails());
         System.out.println("\n");
 
         BankClient kahlo = new BankClient(new Name("Frida",
@@ -93,7 +99,11 @@ class Main
         System.out.println("Full name: " + kahlo.getName().getFullName());
         System.out.println("Reversed name: " + kahlo.getName().getReverseName());
         System.out.println("Details: " + kahlo.getDetails());
+        System.out.println("Account details: " + kahloAccount.getDetails());
+        System.out.println("withdrawn $50");
         kahloAccount.withdraw(50);
+        System.out.println("Account details: " + kahloAccount.getDetails());
+        System.out.println("\n");
 
         BankClient chan = new BankClient(new Name("Jackie",
                                                   "Chan"),
@@ -115,7 +125,10 @@ class Main
         System.out.println("Full name: " + chan.getName().getFullName());
         System.out.println("Reversed name: " + chan.getName().getReverseName());
         System.out.println("Details: " + chan.getDetails());
+        System.out.println("Account details: " + jackieAccount.getDetails());
+        System.out.println("withdrawn $500");
         jackieAccount.withdraw(500);
+        System.out.println("Account details: " + jackieAccount.getDetails());
         System.out.println("\n");
 
     }

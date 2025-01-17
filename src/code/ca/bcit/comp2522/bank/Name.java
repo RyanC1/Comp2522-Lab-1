@@ -8,7 +8,7 @@ package ca.bcit.comp2522.bank;
  * @author Ryan Chu
  * @version 1.0
  */
-public class Name
+class Name
 {
     private static final int MAX_FIRST_LAST_NAME_LEN = 44;
     private static final int FIRST_CHAR_OF_NAME  = 0;

@@ -313,7 +313,7 @@ class BankAccount
         details.append(", ");
         details.append(this.accountOpened.getYyyyMmDd());
         if (this.accountClosed != null) {
-            details.append(" and closed");
+            details.append(" and closed ");
             details.append(this.accountClosed.getDayOfTheWeek());
             details.append(", ");
             details.append(this.accountClosed.getYyyyMmDd());
