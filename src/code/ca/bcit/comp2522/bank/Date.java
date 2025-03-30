@@ -313,13 +313,13 @@ class Date
      * Errors if the given date is null
      *
      * <p>
-     * returns the difference of the calling date's year with the given date's year
+     * returns the difference between the calling date's year and the given date's year
      * or the difference in months if they are the same year
      * or the difference in days if they are the same month
      * </p>
      *
      * @param dateToCompare the Date object to compare this date against
-     * @return a negative int, positive int, or zero
+     * @return a negative int (if the given date is later than this date), positive int (if the given date is earlier than this date), or zero (if they are the same date)
      */
     public int compareTo(Date dateToCompare)
     {
